@@ -1,0 +1,18 @@
+spring:
+  application:
+    name:
+      api-world
+
+  datasource:
+    jdbcUrl: jdbc:postgresql://${POSTGRES_ENDPOINT}:${POSTGRES_PORT}/${POSTGRES_DATABASE_NAME}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+
+logging:
+  level:
+    root: "debug"
+    org.springframework.web: "debug"
+
+mybatis:
+  mapper-locations: classpath:/mappers/*.xml

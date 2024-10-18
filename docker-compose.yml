@@ -1,0 +1,39 @@
+services:
+  db:
+    container_name: apiworld-postgres-container
+    image: postgres:16.4
+    environment:
+      POSTGRES_DB: ${POSTGRES_DATABASE_NAME}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - apiworld_postgres_data:/var/lib/postgresql/data
+    networks:
+      - apiworld-network
+
+  app:
+    container_name: apiworld-sb-container
+    image: apiworld-sb-image
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      POSTGRES_ENDPOINT: ${POSTGRES_ENDPOINT}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      POSTGRES_DATABASE_NAME: ${POSTGRES_DATABASE_NAME}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    depends_on:
+      - db
+    networks:
+      - apiworld-network
+
+networks:
+  apiworld-network:
+
+volumes:
+  apiworld_postgres_data:
