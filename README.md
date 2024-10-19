@@ -39,3 +39,16 @@ The password from the received `LoginRequestDto` is hashed and registered in the
 #### Login
 To be implemented.
 
+## Naming Conventions
+We are following the naming conventions below for this project:
+- **Controller**  
+  `[API Purpose]Controller.java`
+- **Service**  
+  `[API Purpose]Service.java`
+- **DTO**  
+  `[API Purpose]RequestDto.java` : for request  
+  `[API Purpose]ResponseDto.java` : for response
+- **Repository**  
+  `[API Purpose]Repository.java`
+- **DAO**  
+  `[Table Name]Dao.java`
