@@ -1,7 +1,7 @@
-package com.devtkms.apiworld.repository;
+package com.devtkms.apiworld.usermanagement.repository;
 
-import com.devtkms.apiworld.entity.UsersEntity;
-import com.devtkms.apiworld.dao.UsersDao;
+import com.devtkms.apiworld.usermanagement.entity.UsersEntity;
+import com.devtkms.apiworld.usermanagement.dao.UsersDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

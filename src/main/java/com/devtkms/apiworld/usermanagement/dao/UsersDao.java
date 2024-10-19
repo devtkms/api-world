@@ -1,6 +1,6 @@
-package com.devtkms.apiworld.dao;
+package com.devtkms.apiworld.usermanagement.dao;
 
-import com.devtkms.apiworld.entity.UsersEntity;
+import com.devtkms.apiworld.usermanagement.entity.UsersEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
