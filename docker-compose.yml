@@ -1,6 +1,8 @@
+version: "3.9"
 services:
+  # PostgreSQL
   db:
-    container_name: apiworld-postgres-container
+    container_name: postgres-container
     image: postgres:16.4
     environment:
       POSTGRES_DB: ${POSTGRES_DATABASE_NAME}
@@ -9,13 +11,14 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - apiworld_postgres_data:/var/lib/postgresql/data
+      - db_data:/var/lib/postgresql/data
     networks:
-      - apiworld-network
+      - backend
 
-  app:
-    container_name: apiworld-sb-container
-    image: apiworld-sb-image
+  # Spring Boot API
+  api:
+    container_name: sb-container
+    image: sb-image
     build:
       context: .
       dockerfile: ./docker/Dockerfile
@@ -27,13 +30,18 @@ services:
       POSTGRES_DATABASE_NAME: ${POSTGRES_DATABASE_NAME}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: "1.0"
     depends_on:
       - db
     networks:
-      - apiworld-network
+      - backend
 
 networks:
-  apiworld-network:
+  backend:
 
 volumes:
-  apiworld_postgres_data:
+  db_data:
