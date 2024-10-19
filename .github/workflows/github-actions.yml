@@ -3,7 +3,7 @@ name: github-actions
 on:
   push:
     branches:
-       - main
+      - main
 
 jobs:
   build:
@@ -20,5 +20,5 @@ jobs:
             **/*.gradle*
             gradle/wrapper/gradle-wrapper.properties
 
-      - run: ./gradlew build　--no-daemon
+      - run: ./gradlew build --no-daemon
       - run: ./gradlew test --no-daemon
