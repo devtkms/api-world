@@ -11,7 +11,7 @@ public class UserManagementRepository {
     @Autowired
     private UsersDao usersDao;
 
-    public void saveUser(UsersEntity user) {
+    public void insertUser(UsersEntity user) {
 
         usersDao.insertUser(user);
     }

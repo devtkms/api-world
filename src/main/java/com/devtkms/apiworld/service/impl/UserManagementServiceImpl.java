@@ -24,7 +24,7 @@ public class UserManagementServiceImpl implements UserManagementService {
         user.setUserName(registerUserRequestDto.getUserName());
         user.setEmail(registerUserRequestDto.getEmail());
         user.setPassword(hashedPassword);
-        userManagementRepository.saveUser(user);
+        userManagementRepository.insertUser(user);
 
         RegisterUserResponseDto responseDto = new RegisterUserResponseDto();
         responseDto.setUserId(user.getUserId());

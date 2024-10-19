@@ -12,7 +12,7 @@ RUN ./gradlew dependencies --no-daemon
 
 COPY .. .
 
-RUN ./gradlew clean build -x test --no-daemon
+RUN ./gradlew clean build --no-daemon
 
 FROM eclipse-temurin:21-jre
 

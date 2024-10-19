@@ -14,5 +14,4 @@ public class RegisterUserRequestDto {
     private String email;
     @NotNull
     private String password;
-
 }
