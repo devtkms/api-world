@@ -50,12 +50,9 @@ class UserManagementServiceImplTest {
             return null;
         }).when(userManagementRepository).insertUser(any(UsersEntity.class));
 
-        // テストの実行
         RegisterUserResponseDto responseDto = userManagementService.registerUser(requestDto);
 
-        // 検証
         assertEquals(1L, responseDto.getUserId());
-        assertEquals("User registered successfully", responseDto.getMessage());
         verify(userManagementRepository, times(1)).insertUser(any(UsersEntity.class));
         verify(passwordEncoder, times(1)).encode("password123");
     }
@@ -105,7 +102,13 @@ class UserManagementServiceImplTest {
 
         RegisterUserResponseDto responseDto = userManagementService.registerUser(requestDto);
 
-        assertEquals("User registered successfully", responseDto.getMessage());
+
+        assertEquals(1L, responseDto.getUserId());
+
         verify(passwordEncoder, times(1)).encode("password123");
+
+        verify(userManagementRepository).insertUser(argThat(user ->
+                "hashedPassword".equals(user.getPassword()) && "testUser".equals(user.getUserName())
+        ));
     }
 }

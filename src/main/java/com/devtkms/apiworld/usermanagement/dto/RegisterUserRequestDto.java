@@ -1,17 +1,19 @@
 package com.devtkms.apiworld.usermanagement.dto;
 
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
 public class RegisterUserRequestDto {
 
-    @NotNull
+    @NotBlank
     private String userName;
-    @NotNull
+
+    @NotBlank
     @Email
     private String email;
-    @NotNull
+
+    @NotBlank
     private String password;
 }

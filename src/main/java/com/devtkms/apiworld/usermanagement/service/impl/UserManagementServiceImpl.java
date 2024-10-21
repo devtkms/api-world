@@ -31,7 +31,6 @@ public class UserManagementServiceImpl implements UserManagementService {
 
         String hashedPassword = passwordEncoder.encode(registerUserRequestDto.getPassword());
 
-
         UsersEntity user = new UsersEntity();
         user.setUserName(registerUserRequestDto.getUserName());
         user.setEmail(registerUserRequestDto.getEmail());
@@ -41,7 +40,6 @@ public class UserManagementServiceImpl implements UserManagementService {
 
         RegisterUserResponseDto responseDto = new RegisterUserResponseDto();
         responseDto.setUserId(user.getUserId());
-        responseDto.setMessage("User registered successfully");
 
         return responseDto;
     }

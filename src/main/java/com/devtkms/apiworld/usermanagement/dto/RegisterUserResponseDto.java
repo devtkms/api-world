@@ -10,5 +10,4 @@ import lombok.NoArgsConstructor;
 public class RegisterUserResponseDto {
 
     private Long userId;
-    private String message;
 }
