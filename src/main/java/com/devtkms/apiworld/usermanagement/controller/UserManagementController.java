@@ -24,29 +24,28 @@ public class UserManagementController {
     public ResponseEntity<ApiResponseDto<RegisterUserResponseDto>> registerUser(
             @Valid @RequestBody RegisterUserRequestDto registerUserRequestDto) {
         ApiResponseDto<RegisterUserResponseDto> response = new ApiResponseDto<>();
+
         try {
             RegisterUserResponseDto result = userManagementService.registerUser(registerUserRequestDto);
             response.setStatus("success");
             response.setMessage("User registered successfully");
             response.setData(result);
-            response.setCode(null);
             return ResponseEntity.ok(response);
 
-            // 400 Bad Request
         } catch (IllegalArgumentException e) {
-            response.setStatus("error");
-            response.setMessage(e.getMessage());
-            response.setData(null);
-            response.setCode(400);
-            return ResponseEntity.badRequest().body(response);
+            return createErrorResponse(response, e.getMessage(), HttpStatus.BAD_REQUEST);
 
-            // 500 Internal Server Error
         } catch (Exception e) {
-            response.setStatus("error");
-            response.setMessage("An unexpected error occurred");
-            response.setData(null);
-            response.setCode(500);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+            return createErrorResponse(response, "An unexpected error occurred", HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    private ResponseEntity<ApiResponseDto<RegisterUserResponseDto>> createErrorResponse(
+            ApiResponseDto<RegisterUserResponseDto> response, String message, HttpStatus status) {
+        response.setStatus("error");
+        response.setMessage(message);
+        response.setData(null);
+        response.setCode(status.value());
+        return ResponseEntity.status(status).body(response);
     }
 }

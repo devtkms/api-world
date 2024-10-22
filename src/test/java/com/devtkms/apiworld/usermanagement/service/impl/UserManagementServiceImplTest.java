@@ -3,6 +3,7 @@ package com.devtkms.apiworld.usermanagement.service.impl;
 import com.devtkms.apiworld.usermanagement.dto.RegisterUserRequestDto;
 import com.devtkms.apiworld.usermanagement.dto.RegisterUserResponseDto;
 import com.devtkms.apiworld.usermanagement.entity.UsersEntity;
+import com.devtkms.apiworld.usermanagement.exception.UserManagementException;
 import com.devtkms.apiworld.usermanagement.repository.UserManagementRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -63,7 +64,7 @@ class UserManagementServiceImplTest {
         requestDto.setUserName(null);
         requestDto.setPassword("password123");
 
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+        UserManagementException exception = assertThrows(UserManagementException.class, () -> {
             userManagementService.registerUser(requestDto);
         });
 
@@ -76,7 +77,7 @@ class UserManagementServiceImplTest {
         requestDto.setUserName("testUser");
         requestDto.setPassword("");
 
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+        UserManagementException exception = assertThrows(UserManagementException.class, () -> {
             userManagementService.registerUser(requestDto);
         });
 
@@ -101,7 +102,6 @@ class UserManagementServiceImplTest {
         }).when(userManagementRepository).insertUser(any(UsersEntity.class));
 
         RegisterUserResponseDto responseDto = userManagementService.registerUser(requestDto);
-
 
         assertEquals(1L, responseDto.getUserId());
 
