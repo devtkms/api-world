@@ -15,8 +15,4 @@ public class UserManagementRepository {
 
         usersDao.insertUser(user);
     }
-
-    public UsersEntity getUserById(Long userId) {
-        return usersDao.selectUserById(userId);
-    }
 }
