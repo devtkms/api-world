@@ -1,4 +1,4 @@
-package com.devtkms.apiworld.config;
+package com.devtkms.apiworld.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,6 +19,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                         .requestMatchers("/api/user/register").permitAll()
+                        .requestMatchers("/api/user/{userId}").permitAll()
                         .anyRequest().authenticated()
                 );
         return http.build();

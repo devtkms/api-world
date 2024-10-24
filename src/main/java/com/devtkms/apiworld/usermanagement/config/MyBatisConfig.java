@@ -1,4 +1,4 @@
-package com.devtkms.apiworld.config;
+package com.devtkms.apiworld.usermanagement.config;
 
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import javax.sql.DataSource;
 
 @Configuration
-@MapperScan("com.devtkms.apiworld")
+@MapperScan("com.devtkms.apiworld.usermanagement.dao")
 public class MyBatisConfig {
 
     @Bean
