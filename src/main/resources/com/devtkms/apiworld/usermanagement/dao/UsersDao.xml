@@ -9,14 +9,29 @@
         <result property="password" column="password" />
     </resultMap>
 
-    <insert id="insertUser" parameterType="com.devtkms.apiworld.usermanagement.entity.UsersEntity" useGeneratedKeys="true" keyProperty="userId">
+    <insert id="insertUser" parameterType="com.devtkms.apiworld.usermanagement.entity.UsersEntity">
         INSERT INTO users (user_name, email, password)
         VALUES (#{userName}, #{email}, #{password});
     </insert>
 
-    <select id="selectUserById" parameterType="long" resultMap="userResultMap">
+    <select id="selectUser" parameterType="Long" resultMap="userResultMap">
         SELECT user_id, user_name, email, password
         FROM users
         WHERE user_id = #{userId};
     </select>
+
+    <update id="updateUser" parameterType="com.devtkms.apiworld.usermanagement.entity.UsersEntity">
+        UPDATE users
+        SET user_name = #{userName},
+            email = #{email},
+            password = #{password}
+        WHERE user_id = #{userId};
+    </update>
+
+    <delete id="deleteUser" parameterType="Long">
+        DELETE FROM users
+        WHERE user_id = #{userId};
+    </delete>
+
+
 </mapper>

@@ -9,5 +9,9 @@ public interface UsersDao {
 
     void insertUser(UsersEntity user);
 
-    UsersEntity selectUserById(@Param("userId") Long userId);
+    UsersEntity selectUser(Long userId);
+
+    void updateUser(UsersEntity user);
+
+    void deleteUser(Long userId);
 }

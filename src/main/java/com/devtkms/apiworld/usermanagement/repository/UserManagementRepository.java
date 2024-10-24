@@ -15,4 +15,19 @@ public class UserManagementRepository {
 
         usersDao.insertUser(user);
     }
+
+    public UsersEntity selectUser(Long userId) {
+
+        return usersDao.selectUser(userId);
+    }
+
+    public void updateUser(UsersEntity user) {
+
+        usersDao.updateUser(user);
+    }
+
+    public void deleteUser(Long userId) {
+
+        usersDao.deleteUser(userId);
+    }
 }
