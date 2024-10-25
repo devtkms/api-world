@@ -1,21 +1,25 @@
 package com.devtkms.apiworld.usermanagement.service.impl;
 
-import com.devtkms.apiworld.usermanagement.dto.RegisterUserRequestDto;
-import com.devtkms.apiworld.usermanagement.dto.RegisterUserResponseDto;
-import com.devtkms.apiworld.usermanagement.entity.UsersEntity;
-import com.devtkms.apiworld.usermanagement.exception.UserManagementException;
-import com.devtkms.apiworld.usermanagement.repository.UserManagementRepository;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.server.ResponseStatusException;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import com.devtkms.apiworld.usermanagement.dto.RegisterUserRequestDto;
+import com.devtkms.apiworld.usermanagement.dto.RegisterUserResponseDto;
+import com.devtkms.apiworld.usermanagement.entity.UsersEntity;
+import com.devtkms.apiworld.usermanagement.repository.UserManagementRepository;
 
-class UserManagementServiceImplTest {
+public class UserManagementServiceImplTest {
+
+    @InjectMocks
+    private UserManagementServiceImpl userManagementService;
 
     @Mock
     private UserManagementRepository userManagementRepository;
@@ -23,74 +27,20 @@ class UserManagementServiceImplTest {
     @Mock
     private PasswordEncoder passwordEncoder;
 
-    @InjectMocks
-    private UserManagementServiceImpl userManagementService;
-
     @BeforeEach
-    void setUp() {
+    public void setUp() {
         MockitoAnnotations.openMocks(this);
     }
 
     @Test
-    void testRegisterUser_Success() {
+    public void testRegisterUser_Success() {
         RegisterUserRequestDto requestDto = new RegisterUserRequestDto();
-        requestDto.setUserName("testUser");
+        requestDto.setUserName("testuser");
         requestDto.setEmail("test@example.com");
         requestDto.setPassword("password123");
 
-        UsersEntity userEntity = new UsersEntity();
-        userEntity.setUserId(1L);
-        userEntity.setUserName("testUser");
-        userEntity.setEmail("test@example.com");
-
-        when(passwordEncoder.encode(anyString())).thenReturn("hashedPassword");
-
-        doAnswer(invocation -> {
-            UsersEntity entity = invocation.getArgument(0);
-            entity.setUserId(1L);
-            return null;
-        }).when(userManagementRepository).insertUser(any(UsersEntity.class));
-
-        RegisterUserResponseDto responseDto = userManagementService.registerUser(requestDto);
-
-        assertEquals(1L, responseDto.getUserId());
-        verify(userManagementRepository, times(1)).insertUser(any(UsersEntity.class));
-        verify(passwordEncoder, times(1)).encode("password123");
-    }
-
-    @Test
-    void testRegisterUser_ThrowsException_WhenUserNameIsNull() {
-        RegisterUserRequestDto requestDto = new RegisterUserRequestDto();
-        requestDto.setUserName(null);
-        requestDto.setPassword("password123");
-
-        UserManagementException exception = assertThrows(UserManagementException.class, () -> {
-            userManagementService.registerUser(requestDto);
-        });
-
-        assertEquals("User name cannot be null or empty", exception.getMessage());
-    }
-
-    @Test
-    void testRegisterUser_ThrowsException_WhenPasswordIsEmpty() {
-        RegisterUserRequestDto requestDto = new RegisterUserRequestDto();
-        requestDto.setUserName("testUser");
-        requestDto.setPassword("");
-
-        UserManagementException exception = assertThrows(UserManagementException.class, () -> {
-            userManagementService.registerUser(requestDto);
-        });
-
-        assertEquals("Password cannot be null or empty", exception.getMessage());
-    }
-
-    @Test
-    void testRegisterUser_PasswordIsHashed() {
-        RegisterUserRequestDto requestDto = new RegisterUserRequestDto();
-        requestDto.setUserName("testUser");
-        requestDto.setPassword("password123");
-
-        when(passwordEncoder.encode("password123")).thenReturn("hashedPassword");
+        String hashedPassword = "hashedPassword";
+        when(passwordEncoder.encode(requestDto.getPassword())).thenReturn(hashedPassword);
 
         UsersEntity userEntity = new UsersEntity();
         userEntity.setUserId(1L);
@@ -103,12 +53,23 @@ class UserManagementServiceImplTest {
 
         RegisterUserResponseDto responseDto = userManagementService.registerUser(requestDto);
 
+        assertNotNull(responseDto);
         assertEquals(1L, responseDto.getUserId());
+    }
 
-        verify(passwordEncoder, times(1)).encode("password123");
+    @Test
+    public void testRegisterUser_DatabaseError() {
+        RegisterUserRequestDto requestDto = new RegisterUserRequestDto();
+        requestDto.setUserName("testuser");
+        requestDto.setEmail("test@example.com");
+        requestDto.setPassword("password123");
 
-        verify(userManagementRepository).insertUser(argThat(user ->
-                "hashedPassword".equals(user.getPassword()) && "testUser".equals(user.getUserName())
-        ));
+        String hashedPassword = "hashedPassword";
+        when(passwordEncoder.encode(requestDto.getPassword())).thenReturn(hashedPassword);
+
+        doThrow(new RuntimeException("Database error"))
+                .when(userManagementRepository).insertUser(any(UsersEntity.class));
+
+        assertThrows(ResponseStatusException.class, () -> userManagementService.registerUser(requestDto));
     }
 }

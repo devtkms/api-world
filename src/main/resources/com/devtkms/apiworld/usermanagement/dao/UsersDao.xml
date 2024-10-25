@@ -9,9 +9,9 @@
         <result property="password" column="password" />
     </resultMap>
 
-    <insert id="insertUser" parameterType="com.devtkms.apiworld.usermanagement.entity.UsersEntity">
+    <insert id="insertUser" parameterType="com.devtkms.apiworld.usermanagement.entity.UsersEntity" useGeneratedKeys="true" keyProperty="userId">
         INSERT INTO users (user_name, email, password)
-        VALUES (#{userName}, #{email}, #{password});
+        VALUES (#{userName}, #{email}, #{password})
     </insert>
 
     <select id="selectUser" parameterType="Long" resultMap="userResultMap">
