@@ -15,36 +15,55 @@ public class UserManagementController {
     @Autowired
     UserManagementService userManagementService;
 
+    /**
+     * Registers a new user.
+     *
+     * @param registerUserRequestDto
+     * @return a ResponseEntity containing the API response DTO with the registered user's information
+     */
     @PostMapping("/register")
     public ResponseEntity<ApiResponseDto<RegisterUserResponseDto>> registerUser(
             @Valid @RequestBody RegisterUserRequestDto registerUserRequestDto) {
+
         RegisterUserResponseDto result = userManagementService.registerUser(registerUserRequestDto);
-
         ApiResponseDto<RegisterUserResponseDto> response = ApiResponseDto.success(result);
-
         return ResponseEntity.ok(response);
     }
 
+    /**
+     * Retrieves user information by user ID.
+     *
+     * @param userId the ID of the user to retrieve
+     * @return a ResponseEntity containing the API response DTO with the user's information
+     */
     @GetMapping("/{userId}")
     public ResponseEntity<ApiResponseDto<GetUserResponseDto>> getUserById(@PathVariable Long userId) {
 
         GetUserResponseDto result = userManagementService.getUser(userId);
-
         ApiResponseDto<GetUserResponseDto> response = ApiResponseDto.success(result);
-
         return ResponseEntity.ok(response);
     }
 
+    /**
+     * Updates user information.
+     *
+     * @param updateUserRequestDto the request containing the updated user information
+     * @return a ResponseEntity containing the API response DTO with the updated user's information
+     */
     @PutMapping("/{userId}")
     public ResponseEntity<ApiResponseDto<UpdateUserResponseDto>> updateUser(@Valid @RequestBody UpdateUserRequestDto updateUserRequestDto) {
 
         UpdateUserResponseDto result = userManagementService.updateUser(updateUserRequestDto);
-
         ApiResponseDto<UpdateUserResponseDto> response = ApiResponseDto.success(result);
-
         return ResponseEntity.ok(response);
     }
 
+    /**
+     * Deletes a user by user ID.
+     *
+     * @param userId the ID of the user to delete
+     * @return a ResponseEntity containing a success response (no data)
+     */
     @DeleteMapping("/{userId}")
     public ResponseEntity<ApiResponseDto<Void>> deleteUser(@PathVariable Long userId) {
         userManagementService.deleteUser(userId);
