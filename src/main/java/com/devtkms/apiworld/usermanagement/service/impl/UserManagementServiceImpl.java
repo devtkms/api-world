@@ -88,17 +88,6 @@ public class UserManagementServiceImpl implements UserManagementService {
      */
     @Override
     public UpdateUserResponseDto updateUser(UpdateUserRequestDto updateUserRequestDto) {
-        if (updateUserRequestDto.getUserId() == null) {
-            throw new UserManagementException("User id cannot be null");
-        }
-
-        if (updateUserRequestDto.getUserName() == null || updateUserRequestDto.getUserName().isEmpty()) {
-            throw new UserManagementException("User name cannot be null or empty");
-        }
-
-        if (updateUserRequestDto.getPassword() == null || updateUserRequestDto.getPassword().isEmpty()) {
-            throw new UserManagementException("Password cannot be null or empty");
-        }
 
         String hashedPassword = passwordEncoder.encode(updateUserRequestDto.getPassword());
 
@@ -115,7 +104,7 @@ public class UserManagementServiceImpl implements UserManagementService {
             responseDto.setUserId(user.getUserId());
             responseDto.setUserName(user.getUserName());
             responseDto.setEmail(user.getEmail());
-            responseDto.setPassword(user.getPassword()); // Consider whether to return the password
+            responseDto.setPassword(user.getPassword());
 
             return responseDto;
 

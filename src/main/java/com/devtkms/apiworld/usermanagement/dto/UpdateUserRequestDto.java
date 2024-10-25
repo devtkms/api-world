@@ -2,6 +2,7 @@ package com.devtkms.apiworld.usermanagement.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 /**
@@ -11,7 +12,7 @@ import lombok.Data;
 public class UpdateUserRequestDto {
 
     /** The ID of the user to be updated. Must not be blank. */
-    @NotBlank
+    @NotNull
     private Long userId;
 
     /** The name of the user. Must not be blank. */
