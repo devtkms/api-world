@@ -1,19 +1,16 @@
 package com.devtkms.apiworld.usermanagement.controller;
 
 import com.devtkms.apiworld.common.dto.ApiResponseDto;
-import com.devtkms.apiworld.usermanagement.dto.RegisterUserRequestDto;
-import com.devtkms.apiworld.usermanagement.dto.RegisterUserResponseDto;
+import com.devtkms.apiworld.usermanagement.dto.*;
 import com.devtkms.apiworld.usermanagement.service.UserManagementService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 class UserManagementControllerTest {
@@ -30,63 +27,144 @@ class UserManagementControllerTest {
     }
 
     @Test
-    void testRegisterUser_Success() {
+    void registerUser_ValidRequest_ReturnsSuccess() {
 
         RegisterUserRequestDto requestDto = new RegisterUserRequestDto();
         requestDto.setUserName("testUser");
         requestDto.setEmail("test@example.com");
-        requestDto.setPassword("password123");
+        requestDto.setPassword("securePassword");
 
-        RegisterUserResponseDto responseDto = new RegisterUserResponseDto(1L);
+        RegisterUserResponseDto responseDto = new RegisterUserResponseDto();
+        responseDto.setUserId(1L);
+        when(userManagementService.registerUser(requestDto)).thenReturn(responseDto);
 
-        when(userManagementService.registerUser(any(RegisterUserRequestDto.class))).thenReturn(responseDto);
+        // コントローラーのメソッドを呼び出す
+        ResponseEntity<ApiResponseDto<RegisterUserResponseDto>> response = userManagementController.registerUser(requestDto);
 
-        ResponseEntity<ApiResponseDto<RegisterUserResponseDto>> responseEntity =
-                userManagementController.registerUser(requestDto);
-
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals("success", responseEntity.getBody().getStatus());
-        assertEquals("User registered successfully", responseEntity.getBody().getMessage());
-        assertNotNull(responseEntity.getBody().getData());
-        assertEquals(1L, responseEntity.getBody().getData().getUserId());
+        // 結果のアサーション
+        assertEquals(200, response.getStatusCodeValue());
+        assertNotNull(response.getBody());
+        assertEquals("success", response.getBody().getStatus());
+        assertEquals(responseDto, response.getBody().getData());
+        assertEquals("Request completed successfully", response.getBody().getMessage());
+        assertEquals(200, response.getBody().getCode());
     }
 
     @Test
-    void testRegisterUser_BadRequest() {
+    void registerUser_InvalidRequest_ReturnsBadRequest() {
 
         RegisterUserRequestDto requestDto = new RegisterUserRequestDto();
-
         requestDto.setUserName("");
+        requestDto.setEmail("invalid-email");
+        requestDto.setPassword("short");
 
-        doThrow(new IllegalArgumentException("Invalid data")).when(userManagementService).registerUser(any());
+        when(userManagementService.registerUser(requestDto)).thenThrow(new IllegalArgumentException("Invalid request"));
 
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            userManagementController.registerUser(requestDto);
+        });
 
-        ResponseEntity<ApiResponseDto<RegisterUserResponseDto>> responseEntity =
-                userManagementController.registerUser(requestDto);
-
-
-        assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
-        assertEquals("error", responseEntity.getBody().getStatus());
-        assertEquals("Invalid data", responseEntity.getBody().getMessage());
+        assertEquals("Invalid request", exception.getMessage());
     }
 
     @Test
-    void testRegisterUser_InternalServerError() {
+    void getUserById_ExistingUser_ReturnsUser() {
+        Long userId = 1L;
 
-        RegisterUserRequestDto requestDto = new RegisterUserRequestDto();
-        requestDto.setUserName("testUser");
-        requestDto.setEmail("test@example.com");
-        requestDto.setPassword("password123");
+        GetUserResponseDto responseDto = new GetUserResponseDto(userId, "testUser", "test@example.com");
+        when(userManagementService.getUser(userId)).thenReturn(responseDto);
 
-        doThrow(new RuntimeException("Unexpected error")).when(userManagementService).registerUser(any());
+        ResponseEntity<ApiResponseDto<GetUserResponseDto>> response = userManagementController.getUserById(userId);
 
+        assertEquals(200, response.getStatusCodeValue());
+        assertNotNull(response.getBody());
+        assertEquals("success", response.getBody().getStatus());
+        assertEquals(responseDto, response.getBody().getData());
+        assertEquals("Request completed successfully", response.getBody().getMessage());
+        assertEquals(200, response.getBody().getCode());
+    }
 
-        ResponseEntity<ApiResponseDto<RegisterUserResponseDto>> responseEntity =
-                userManagementController.registerUser(requestDto);
+    @Test
+    void getUserById_NonExistingUser_ReturnsNotFound() {
+        Long userId = 999L;
 
+        when(userManagementService.getUser(userId)).thenThrow(new IllegalArgumentException("User not found"));
 
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-        assertEquals("error", responseEntity.getBody().getStatus());
-        assertEquals("An unexpected error occurred", responseEntity.getBody().getMessage());
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            userManagementController.getUserById(userId);
+        });
+
+        assertEquals("User not found", exception.getMessage());
+    }
+
+    @Test
+    void updateUser_ValidRequest_ReturnsSuccess() {
+        Long userId = 1L;
+
+        UpdateUserRequestDto requestDto = new UpdateUserRequestDto();
+        requestDto.setUserId(userId);
+        requestDto.setUserName("updatedUser");
+        requestDto.setEmail("updated@example.com");
+        requestDto.setPassword("newSecurePassword");
+
+        UpdateUserResponseDto responseDto = new UpdateUserResponseDto(userId, "updatedUser", "updated@example.com", "newSecurePassword");
+        when(userManagementService.updateUser(requestDto)).thenReturn(responseDto);
+
+        ResponseEntity<ApiResponseDto<UpdateUserResponseDto>> response = userManagementController.updateUser(requestDto);
+
+        assertEquals(200, response.getStatusCodeValue());
+        assertNotNull(response.getBody());
+        assertEquals("success", response.getBody().getStatus());
+        assertEquals(responseDto, response.getBody().getData());
+        assertEquals("Request completed successfully", response.getBody().getMessage());
+        assertEquals(200, response.getBody().getCode());
+    }
+
+    @Test
+    void updateUser_InvalidRequest_ReturnsBadRequest() {
+        Long userId = 1L;
+
+        UpdateUserRequestDto requestDto = new UpdateUserRequestDto();
+        requestDto.setUserId(userId);
+        requestDto.setUserName("");
+        requestDto.setEmail("invalid-email");
+        requestDto.setPassword("short");
+
+        when(userManagementService.updateUser(requestDto)).thenThrow(new IllegalArgumentException("Invalid request"));
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            userManagementController.updateUser(requestDto);
+        });
+
+        assertEquals("Invalid request", exception.getMessage());
+    }
+
+    @Test
+    void deleteUser_ExistingUser_ReturnsSuccess() {
+        Long userId = 1L;
+
+        doNothing().when(userManagementService).deleteUser(userId);
+
+        ResponseEntity<ApiResponseDto<Void>> response = userManagementController.deleteUser(userId);
+
+        assertEquals(200, response.getStatusCodeValue());
+        assertNotNull(response.getBody());
+        assertEquals("success", response.getBody().getStatus());
+        assertNull(response.getBody().getData());
+        assertEquals("Request completed successfully", response.getBody().getMessage());
+        assertEquals(200, response.getBody().getCode());
+    }
+
+    @Test
+    void deleteUser_NonExistingUser_ReturnsNotFound() {
+        Long userId = 999L;
+
+        doThrow(new IllegalArgumentException("User not found")).when(userManagementService).deleteUser(userId);
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            userManagementController.deleteUser(userId);
+        });
+
+        assertEquals("User not found", exception.getMessage());
     }
 }
