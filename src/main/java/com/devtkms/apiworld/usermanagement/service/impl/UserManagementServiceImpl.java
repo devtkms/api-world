@@ -12,6 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+/**
+ * Service implementation for managing user-related operations.
+ */
 @Service
 public class UserManagementServiceImpl implements UserManagementService {
 
@@ -31,13 +34,6 @@ public class UserManagementServiceImpl implements UserManagementService {
     @Override
     @Transactional
     public RegisterUserResponseDto registerUser(RegisterUserRequestDto registerUserRequestDto) {
-        if (registerUserRequestDto.getUserName() == null || registerUserRequestDto.getUserName().isEmpty()) {
-            throw new UserManagementException("User name cannot be null or empty");
-        }
-
-        if (registerUserRequestDto.getPassword() == null || registerUserRequestDto.getPassword().isEmpty()) {
-            throw new UserManagementException("Password cannot be null or empty");
-        }
 
         String hashedPassword = passwordEncoder.encode(registerUserRequestDto.getPassword());
 
