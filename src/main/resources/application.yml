@@ -9,10 +9,8 @@ spring:
     password: ${POSTGRES_PASSWORD}
     driver-class-name: org.postgresql.Driver
 
-#logging:
-#  level:
-#    root: "debug"
-#    org.springframework.web: "debug"
+file:
+  upload-dir: /tmp/uploads
 
 mybatis:
   mapper-locations: classpath*:com/devtkms/apiworld/dao/*.xml

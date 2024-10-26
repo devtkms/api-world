@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.devtkms.apiworld.filemanagement.dao.FilesDao">
+
+    <resultMap id="fileResultMap" type="com.devtkms.apiworld.filemanagement.entity.FilesEntity">
+        <id property="fileId" column="file_id" />
+        <result property="fileName" column="file_name" />
+        <result property="fileType" column="file_type" />
+        <result property="fileSize" column="file_size" />
+        <result property="fileUrl" column="file_url" />
+
+    </resultMap>
+
+    <insert id="insertFile" parameterType="com.devtkms.apiworld.filemanagement.entity.FilesEntity">
+        INSERT INTO files (file_name, file_type, file_size, file_url)
+        VALUES (#{fileName}, #{fileType}, #{fileSize}, #{fileUrl})
+    </insert>
+
+</mapper>

@@ -2,7 +2,6 @@ package com.devtkms.apiworld.usermanagement.dao;
 
 import com.devtkms.apiworld.usermanagement.entity.UsersEntity;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 
 /**
  * Data Access Object (DAO) interface for user-related database operations.
