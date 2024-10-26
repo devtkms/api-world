@@ -16,16 +16,20 @@ import static org.mockito.Mockito.*;
 class UserManagementControllerTest {
 
     @InjectMocks
-    private UserManagementController userManagementController;
+    private UserManagementController userManagementController; // Controller to be tested
 
     @Mock
-    private UserManagementService userManagementService;
+    private UserManagementService userManagementService; // Mocked service for user management
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
+        MockitoAnnotations.openMocks(this); // Initialize mocks before each test
     }
 
+    /**
+     * Tests the user registration process with valid request data.
+     * It should return a successful response containing the registered user's information.
+     */
     @Test
     void registerUser_ValidRequest_ReturnsSuccess() {
 
@@ -36,12 +40,10 @@ class UserManagementControllerTest {
 
         RegisterUserResponseDto responseDto = new RegisterUserResponseDto();
         responseDto.setUserId(1L);
-        when(userManagementService.registerUser(requestDto)).thenReturn(responseDto);
+        when(userManagementService.registerUser(requestDto)).thenReturn(responseDto); // Mock service response
 
-        // コントローラーのメソッドを呼び出す
         ResponseEntity<ApiResponseDto<RegisterUserResponseDto>> response = userManagementController.registerUser(requestDto);
 
-        // 結果のアサーション
         assertEquals(200, response.getStatusCodeValue());
         assertNotNull(response.getBody());
         assertEquals("success", response.getBody().getStatus());
@@ -50,6 +52,10 @@ class UserManagementControllerTest {
         assertEquals(200, response.getBody().getCode());
     }
 
+    /**
+     * Tests the user registration process with invalid request data.
+     * It should throw an IllegalArgumentException.
+     */
     @Test
     void registerUser_InvalidRequest_ReturnsBadRequest() {
 
@@ -58,21 +64,25 @@ class UserManagementControllerTest {
         requestDto.setEmail("invalid-email");
         requestDto.setPassword("short");
 
-        when(userManagementService.registerUser(requestDto)).thenThrow(new IllegalArgumentException("Invalid request"));
+        when(userManagementService.registerUser(requestDto)).thenThrow(new IllegalArgumentException("Invalid request")); // Mock exception
 
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            userManagementController.registerUser(requestDto);
+            userManagementController.registerUser(requestDto); // Expecting an exception
         });
 
-        assertEquals("Invalid request", exception.getMessage());
+        assertEquals("Invalid request", exception.getMessage()); // Verify the exception message
     }
 
+    /**
+     * Tests retrieving user information by user ID for an existing user.
+     * It should return a successful response containing the user's details.
+     */
     @Test
     void getUserById_ExistingUser_ReturnsUser() {
         Long userId = 1L;
 
         GetUserResponseDto responseDto = new GetUserResponseDto(userId, "testUser", "test@example.com");
-        when(userManagementService.getUser(userId)).thenReturn(responseDto);
+        when(userManagementService.getUser(userId)).thenReturn(responseDto); // Mock service response
 
         ResponseEntity<ApiResponseDto<GetUserResponseDto>> response = userManagementController.getUserById(userId);
 
@@ -84,19 +94,27 @@ class UserManagementControllerTest {
         assertEquals(200, response.getBody().getCode());
     }
 
+    /**
+     * Tests retrieving user information by user ID for a non-existing user.
+     * It should throw an IllegalArgumentException.
+     */
     @Test
     void getUserById_NonExistingUser_ReturnsNotFound() {
         Long userId = 999L;
 
-        when(userManagementService.getUser(userId)).thenThrow(new IllegalArgumentException("User not found"));
+        when(userManagementService.getUser(userId)).thenThrow(new IllegalArgumentException("User not found")); // Mock exception
 
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            userManagementController.getUserById(userId);
+            userManagementController.getUserById(userId); // Expecting an exception
         });
 
-        assertEquals("User not found", exception.getMessage());
+        assertEquals("User not found", exception.getMessage()); // Verify the exception message
     }
 
+    /**
+     * Tests the user update process with valid request data.
+     * It should return a successful response containing the updated user's information.
+     */
     @Test
     void updateUser_ValidRequest_ReturnsSuccess() {
         Long userId = 1L;
@@ -108,7 +126,7 @@ class UserManagementControllerTest {
         requestDto.setPassword("newSecurePassword");
 
         UpdateUserResponseDto responseDto = new UpdateUserResponseDto(userId, "updatedUser", "updated@example.com", "newSecurePassword");
-        when(userManagementService.updateUser(requestDto)).thenReturn(responseDto);
+        when(userManagementService.updateUser(requestDto)).thenReturn(responseDto); // Mock service response
 
         ResponseEntity<ApiResponseDto<UpdateUserResponseDto>> response = userManagementController.updateUser(requestDto);
 
@@ -120,6 +138,10 @@ class UserManagementControllerTest {
         assertEquals(200, response.getBody().getCode());
     }
 
+    /**
+     * Tests the user update process with invalid request data.
+     * It should throw an IllegalArgumentException.
+     */
     @Test
     void updateUser_InvalidRequest_ReturnsBadRequest() {
         Long userId = 1L;
@@ -130,20 +152,24 @@ class UserManagementControllerTest {
         requestDto.setEmail("invalid-email");
         requestDto.setPassword("short");
 
-        when(userManagementService.updateUser(requestDto)).thenThrow(new IllegalArgumentException("Invalid request"));
+        when(userManagementService.updateUser(requestDto)).thenThrow(new IllegalArgumentException("Invalid request")); // Mock exception
 
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            userManagementController.updateUser(requestDto);
+            userManagementController.updateUser(requestDto); // Expecting an exception
         });
 
-        assertEquals("Invalid request", exception.getMessage());
+        assertEquals("Invalid request", exception.getMessage()); // Verify the exception message
     }
 
+    /**
+     * Tests the user deletion process for an existing user.
+     * It should return a success response with no data.
+     */
     @Test
     void deleteUser_ExistingUser_ReturnsSuccess() {
         Long userId = 1L;
 
-        doNothing().when(userManagementService).deleteUser(userId);
+        doNothing().when(userManagementService).deleteUser(userId); // Mock successful deletion
 
         ResponseEntity<ApiResponseDto<Void>> response = userManagementController.deleteUser(userId);
 
@@ -155,16 +181,20 @@ class UserManagementControllerTest {
         assertEquals(200, response.getBody().getCode());
     }
 
+    /**
+     * Tests the user deletion process for a non-existing user.
+     * It should throw an IllegalArgumentException.
+     */
     @Test
     void deleteUser_NonExistingUser_ReturnsNotFound() {
         Long userId = 999L;
 
-        doThrow(new IllegalArgumentException("User not found")).when(userManagementService).deleteUser(userId);
+        doThrow(new IllegalArgumentException("User not found")).when(userManagementService).deleteUser(userId); // Mock exception
 
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            userManagementController.deleteUser(userId);
+            userManagementController.deleteUser(userId); // Expecting an exception
         });
 
-        assertEquals("User not found", exception.getMessage());
+        assertEquals("User not found", exception.getMessage()); // Verify the exception message
     }
 }
