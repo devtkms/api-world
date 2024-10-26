@@ -30,14 +30,35 @@ psql -U postgres -d api_world
 ### User Management API
 This API provides the following functionalities:
 - User registration
-- Login (planned)
+- Retrieve user information
+- Update user information
+- Delete user information
+- Login
 
-#### User Registration
-This functionality takes a `LoginRequestDto` and returns a `LoginResponseDto`.  
-The password from the received `LoginRequestDto` is hashed and registered in the `users` table.
+#### ◆User Registration
+This functionality takes a `RegisterUserRequestDto` and returns a `RegisterUserResponseDto`.
 
-#### Login
-To be implemented.
+The password from the received `RegisterUserRequestDto` is hashed and registered in the `users` table.
+
+#### ◆Retrieve user information
+This functionality retrieves user information by user ID. 
+
+It takes the user ID as a path variable and returns a `GetUserResponseDto` containing the user's information.
+
+#### ◆Update user information
+This functionality updates user information. 
+
+It takes an `UpdateUserRequestDto` as input and returns an `UpdateUserResponseDto` with the updated user's information.
+
+#### ◆Delete user information
+This functionality deletes a user by user ID. 
+
+It takes the user ID as a path variable and does not return any data, only a success response.
+
+#### ◆Login
+This functionality authenticates a user. 
+
+It takes a `LoginRequestDto` containing the user ID and password, and upon successful authentication, creates a security context and returns a success message wrapped in an `ApiResponseDto`.
 
 ## Naming Conventions
 We are following the naming conventions below for this project:
