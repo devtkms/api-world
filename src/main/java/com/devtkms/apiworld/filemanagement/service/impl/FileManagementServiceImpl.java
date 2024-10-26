@@ -1,9 +1,13 @@
 package com.devtkms.apiworld.filemanagement.service.impl;
 
+import com.devtkms.apiworld.filemanagement.dto.DeserializeJsonToObjectResponseDto;
 import com.devtkms.apiworld.filemanagement.dto.RegisterFileResponseDto;
+import com.devtkms.apiworld.filemanagement.dto.SerializeObjectToJsonRequestDto;
 import com.devtkms.apiworld.filemanagement.entity.FilesEntity;
 import com.devtkms.apiworld.filemanagement.repository.FileManagementRepository;
 import com.devtkms.apiworld.filemanagement.service.FileManagementService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -15,6 +19,12 @@ import java.io.IOException;
 
 @Service
 public class FileManagementServiceImpl implements FileManagementService {
+
+    private final ObjectMapper objectMapper;
+
+    public FileManagementServiceImpl() {
+        this.objectMapper = new ObjectMapper();
+    }
 
     @Autowired
     private FileManagementRepository fileManagementRepository;
@@ -59,5 +69,23 @@ public class FileManagementServiceImpl implements FileManagementService {
         registerFileResponseDto.setFileUrl(filesEntity.getFileUrl());
 
         return registerFileResponseDto;
+    }
+
+    @Override
+    public String serializeObjectToJson(SerializeObjectToJsonRequestDto requestDto) {
+        try {
+            return objectMapper.writeValueAsString(requestDto);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Serialization failed", e);
+        }
+    }
+
+    @Override
+    public DeserializeJsonToObjectResponseDto deserializeJsonToObject(String json, Class<DeserializeJsonToObjectResponseDto> clazz) {
+        try {
+            return objectMapper.readValue(json, clazz);
+        } catch (IOException e) {
+            throw new RuntimeException("Deserialization failed", e);
+        }
     }
 }

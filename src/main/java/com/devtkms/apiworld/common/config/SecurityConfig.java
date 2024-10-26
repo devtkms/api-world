@@ -36,6 +36,8 @@ public class SecurityConfig {
                         .requestMatchers("/api/user/{userId}").permitAll() // Allow access to user information by ID
                         .requestMatchers("/api/user/login").permitAll() // Allow access to user login
                         .requestMatchers("/api/file/register").permitAll() // Allow access to file registration
+                        .requestMatchers("/api/file/serialize").permitAll() //
+                        .requestMatchers("/api/file/deserialize").permitAll() //
                         .anyRequest().authenticated() // All other requests require authentication
                 )
                 .securityContext((context) -> context
