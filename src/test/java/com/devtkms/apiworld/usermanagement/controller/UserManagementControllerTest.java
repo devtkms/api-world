@@ -2,10 +2,7 @@ package com.devtkms.apiworld.usermanagement.controller;
 
 import com.devtkms.apiworld.common.dto.ApiResponseDto;
 import com.devtkms.apiworld.usermanagement.dto.*;
-import com.devtkms.apiworld.usermanagement.service.DeleteUserService;
-import com.devtkms.apiworld.usermanagement.service.GetUserService;
-import com.devtkms.apiworld.usermanagement.service.RegisterUserService;
-import com.devtkms.apiworld.usermanagement.service.UpdateUserService;
+import com.devtkms.apiworld.usermanagement.service.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -23,16 +20,7 @@ class UserManagementControllerTest {
     private UserManagementController userManagementController; // Controller to be tested
 
     @Mock
-    RegisterUserService registerUserService;
-
-    @Mock
-    GetUserService getUserService;
-
-    @Mock
-    UpdateUserService updateUserService;
-
-    @Mock
-    DeleteUserService deleteUserService;
+    UserManagementService userManagementService;
 
     @BeforeEach
     void setUp() {
@@ -53,7 +41,7 @@ class UserManagementControllerTest {
 
         RegisterUserResponseDto responseDto = new RegisterUserResponseDto();
         responseDto.setUserId(1L);
-        when(registerUserService.registerUser(requestDto)).thenReturn(responseDto); // Mock service response
+        when(userManagementService.registerUser(requestDto)).thenReturn(responseDto); // Mock service response
 
         ResponseEntity<ApiResponseDto<RegisterUserResponseDto>> response = userManagementController.registerUser(requestDto);
 
@@ -77,7 +65,7 @@ class UserManagementControllerTest {
         requestDto.setEmail("invalid-email");
         requestDto.setPassword("short");
 
-        when(registerUserService.registerUser(requestDto)).thenThrow(new IllegalArgumentException("Invalid request")); // Mock exception
+        when(userManagementService.registerUser(requestDto)).thenThrow(new IllegalArgumentException("Invalid request")); // Mock exception
 
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
             userManagementController.registerUser(requestDto); // Expecting an exception
@@ -95,7 +83,7 @@ class UserManagementControllerTest {
         Long userId = 1L;
 
         GetUserResponseDto responseDto = new GetUserResponseDto(userId, "testUser", "test@example.com");
-        when(getUserService.getUser(userId)).thenReturn(responseDto); // Mock service response
+        when(userManagementService.getUser(userId)).thenReturn(responseDto); // Mock service response
 
         ResponseEntity<ApiResponseDto<GetUserResponseDto>> response = userManagementController.getUserById(userId);
 
@@ -115,7 +103,7 @@ class UserManagementControllerTest {
     void getUserById_NonExistingUser_ReturnsNotFound() {
         Long userId = 999L;
 
-        when(getUserService.getUser(userId)).thenThrow(new IllegalArgumentException("User not found")); // Mock exception
+        when(userManagementService.getUser(userId)).thenThrow(new IllegalArgumentException("User not found")); // Mock exception
 
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
             userManagementController.getUserById(userId); // Expecting an exception
@@ -139,7 +127,7 @@ class UserManagementControllerTest {
         requestDto.setPassword("newSecurePassword");
 
         UpdateUserResponseDto responseDto = new UpdateUserResponseDto(userId, "updatedUser", "updated@example.com", "newSecurePassword");
-        when(updateUserService.updateUser(requestDto)).thenReturn(responseDto); // Mock service response
+        when(userManagementService.updateUser(requestDto)).thenReturn(responseDto); // Mock service response
 
         ResponseEntity<ApiResponseDto<UpdateUserResponseDto>> response = userManagementController.updateUser(requestDto);
 
@@ -165,7 +153,7 @@ class UserManagementControllerTest {
         requestDto.setEmail("invalid-email");
         requestDto.setPassword("short");
 
-        when(updateUserService.updateUser(requestDto)).thenThrow(new IllegalArgumentException("Invalid request")); // Mock exception
+        when(userManagementService.updateUser(requestDto)).thenThrow(new IllegalArgumentException("Invalid request")); // Mock exception
 
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
             userManagementController.updateUser(requestDto); // Expecting an exception
@@ -182,7 +170,7 @@ class UserManagementControllerTest {
     void deleteUser_ExistingUser_ReturnsSuccess() {
         Long userId = 1L;
 
-        doNothing().when(deleteUserService).deleteUser(userId); // Mock successful deletion
+        doNothing().when(userManagementService).deleteUser(userId); // Mock successful deletion
 
         ResponseEntity<ApiResponseDto<Void>> response = userManagementController.deleteUser(userId);
 
@@ -202,7 +190,7 @@ class UserManagementControllerTest {
     void deleteUser_NonExistingUser_ReturnsNotFound() {
         Long userId = 999L;
 
-        doThrow(new IllegalArgumentException("User not found")).when(deleteUserService).deleteUser(userId); // Mock exception
+        doThrow(new IllegalArgumentException("User not found")).when(userManagementService).deleteUser(userId); // Mock exception
 
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
             userManagementController.deleteUser(userId); // Expecting an exception

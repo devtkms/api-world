@@ -2,10 +2,7 @@ package com.devtkms.apiworld.usermanagement.controller;
 
 import com.devtkms.apiworld.common.dto.ApiResponseDto;
 import com.devtkms.apiworld.usermanagement.dto.*;
-import com.devtkms.apiworld.usermanagement.service.DeleteUserService;
-import com.devtkms.apiworld.usermanagement.service.GetUserService;
-import com.devtkms.apiworld.usermanagement.service.RegisterUserService;
-import com.devtkms.apiworld.usermanagement.service.UpdateUserService;
+import com.devtkms.apiworld.usermanagement.service.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -26,16 +23,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserManagementController {
 
     @Autowired
-    RegisterUserService registerUserService;
-
-    @Autowired
-    GetUserService getUserService;
-
-    @Autowired
-    UpdateUserService updateUserService;
-
-    @Autowired
-    DeleteUserService deleteUserService;
+    UserManagementService userManagementService;
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -55,7 +43,7 @@ public class UserManagementController {
     public ResponseEntity<ApiResponseDto<RegisterUserResponseDto>> registerUser(
             @Valid @RequestBody RegisterUserRequestDto registerUserRequestDto) {
 
-        RegisterUserResponseDto result = registerUserService.registerUser(registerUserRequestDto);
+        RegisterUserResponseDto result = userManagementService.registerUser(registerUserRequestDto);
         ApiResponseDto<RegisterUserResponseDto> response = ApiResponseDto.success(result);
         return ResponseEntity.ok(response);
     }
@@ -69,7 +57,7 @@ public class UserManagementController {
     @GetMapping("/{userId}")
     public ResponseEntity<ApiResponseDto<GetUserResponseDto>> getUserById(@PathVariable Long userId) {
 
-        GetUserResponseDto result = getUserService.getUser(userId);
+        GetUserResponseDto result = userManagementService.getUser(userId);
         ApiResponseDto<GetUserResponseDto> response = ApiResponseDto.success(result);
         return ResponseEntity.ok(response);
     }
@@ -83,7 +71,7 @@ public class UserManagementController {
     @PutMapping("/{userId}")
     public ResponseEntity<ApiResponseDto<UpdateUserResponseDto>> updateUser(@Valid @RequestBody UpdateUserRequestDto updateUserRequestDto) {
 
-        UpdateUserResponseDto result = updateUserService.updateUser(updateUserRequestDto);
+        UpdateUserResponseDto result = userManagementService.updateUser(updateUserRequestDto);
         ApiResponseDto<UpdateUserResponseDto> response = ApiResponseDto.success(result);
         return ResponseEntity.ok(response);
     }
@@ -97,7 +85,7 @@ public class UserManagementController {
     @DeleteMapping("/{userId}")
     public ResponseEntity<ApiResponseDto<Void>> deleteUser(@PathVariable Long userId) {
 
-        deleteUserService.deleteUser(userId);
+        userManagementService.deleteUser(userId);
         return ResponseEntity.ok(ApiResponseDto.success(null));
     }
 

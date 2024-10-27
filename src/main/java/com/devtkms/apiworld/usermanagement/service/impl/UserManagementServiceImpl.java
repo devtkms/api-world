@@ -4,10 +4,7 @@ import com.devtkms.apiworld.usermanagement.dto.*;
 import com.devtkms.apiworld.usermanagement.entity.UsersEntity;
 import com.devtkms.apiworld.usermanagement.exception.UserManagementException;
 import com.devtkms.apiworld.usermanagement.repository.UserManagementRepository;
-import com.devtkms.apiworld.usermanagement.service.DeleteUserService;
-import com.devtkms.apiworld.usermanagement.service.GetUserService;
-import com.devtkms.apiworld.usermanagement.service.RegisterUserService;
-import com.devtkms.apiworld.usermanagement.service.UpdateUserService;
+import com.devtkms.apiworld.usermanagement.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,7 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
  * Service implementation for managing user-related operations.
  */
 @Service
-public class UserManagementServiceImpl implements RegisterUserService,GetUserService, UpdateUserService, DeleteUserService  {
+public class UserManagementServiceImpl implements UserManagementService {
 
     @Autowired
     private UserManagementRepository userManagementRepository;
