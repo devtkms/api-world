@@ -1,67 +1,29 @@
 # api-world
-
-This project aims to create and share various APIs based on Java and Spring.
-
-## Setup
-### Clone the Project
-Run the following command in the folder where you want to create the project:
-```
-git clone https://github.com/devtkms/api-world.git
-```
-### Create Docker Containers
-Run the following command in the root directory of the project:
-```
-docker-compose up --build
-```
-### Setup PostgreSQL
-Follow the steps below to set up the database:
-- Enter the PostgreSQL Docker container by running the following command:
-```
-docker exec -it apiworld-postgres-container bash
-```
-
-- Access the `api_world` database by running the following command:
-```
-psql -U postgres -d api_world
-```
-- Execute the SQL files located in the `sql` folder to create the necessary tables, if needed.
+This project aims to create various APIs using Java and Spring, while learning about topics such as OOP principles, design patterns, security, and database operations.
 
 ## About the API
 ### User Management API
-This API provides the following functionalities:
-- User registration
-- Retrieve user information
-- Update user information
-- Delete user information
-- Login
+This API allows for user registration, information retrieval, updating, and deletion.
 
-#### ◆User Registration
-This functionality takes a `RegisterUserRequestDto` and returns a `RegisterUserResponseDto`.
+- **POST** `/api/user/register`: Registers a new user.
+- **GET** `/api/user/{userId}`: Retrieves the information of the specified user.
+- **PUT** `/api/user/{userId}`: Updates the information of the specified user.
+- **DELETE** `/api/user/{userId}`: Deletes the specified user.
 
-The password from the received `RegisterUserRequestDto` is hashed and registered in the `users` table.
+Through this API, I learned about SOLID, DRY, and KISS principles.
 
-#### ◆Retrieve user information
-This functionality retrieves user information by user ID. 
+#### ◆SOLID
+Responsibilities are divided among the Controller, Service, Repository, and DAO.
 
-It takes the user ID as a path variable and returns a `GetUserResponseDto` containing the user's information.
+#### ◆DRY
+Utility classes are used to avoid duplication of processing.
 
-#### ◆Update user information
-This functionality updates user information. 
-
-It takes an `UpdateUserRequestDto` as input and returns an `UpdateUserResponseDto` with the updated user's information.
-
-#### ◆Delete user information
-This functionality deletes a user by user ID. 
-
-It takes the user ID as a path variable and does not return any data, only a success response.
-
-#### ◆Login
-This functionality authenticates a user. 
-
-It takes a `LoginRequestDto` containing the user ID and password, and upon successful authentication, creates a security context and returns a success message wrapped in an `ApiResponseDto`.
+#### ◆KISS
+Complex processing is avoided, keeping the implementation simple.
 
 ## Naming Conventions
-We are following the naming conventions below for this project:
+In this project, we follow the naming conventions below. This enhances code readability and facilitates maintenance.
+
 - **Controller**  
   `[API Purpose]Controller.java`
 - **Service**  
