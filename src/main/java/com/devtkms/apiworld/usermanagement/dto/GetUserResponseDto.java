@@ -12,12 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class GetUserResponseDto {
 
-    /** The ID of the user. */
     private Long userId;
-
-    /** The name of the user. */
     private String userName;
-
-    /** The email of the user. */
     private String email;
 }

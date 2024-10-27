@@ -14,15 +14,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UpdateUserResponseDto {
 
-    /** The ID of the updated user. */
     private Long userId;
-
-    /** The updated name of the user. */
     private String userName;
-
-    /** The updated email of the user. */
     private String email;
-
-    /** The updated password of the user. */
     private String password;
 }

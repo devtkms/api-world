@@ -1,6 +1,7 @@
 package com.devtkms.apiworld.common.exception;
 
 import com.devtkms.apiworld.common.dto.ApiResponseDto;
+import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,18 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ApiResponseDto<Void>> handleIllegalArgumentException(IllegalArgumentException ex) {
+        ApiResponseDto<Void> response = ApiResponseDto.error(ex.getMessage(), 400);
+        return ResponseEntity.badRequest().body(response);
+    }
+
+    /**
+     * Handles FileUploadException thrown by the application.
+     *
+     * @param ex the FileUploadException that was thrown
+     * @return a ResponseEntity containing an error response
+     */
+    @ExceptionHandler(FileUploadException.class)
+    public ResponseEntity<ApiResponseDto<Void>> handleFileUploadException(FileUploadException ex) {
         ApiResponseDto<Void> response = ApiResponseDto.error(ex.getMessage(), 400);
         return ResponseEntity.badRequest().body(response);
     }

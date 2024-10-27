@@ -12,9 +12,9 @@ public class FileManagementRepository {
     private FilesDao filesDao;
 
     /**
+     * Inserts a file entity into the database using the FilesDao.
      *
-     *
-     * @param
+     * @param filesEntity The FilesEntity object containing the file metadata to be inserted.
      */
     public void insertFile(FilesEntity filesEntity) {
         filesDao.insertFile(filesEntity);

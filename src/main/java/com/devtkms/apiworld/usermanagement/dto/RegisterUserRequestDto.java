@@ -10,16 +10,11 @@ import lombok.Data;
 @Data
 public class RegisterUserRequestDto {
 
-    /** The name of the user. Must not be blank. */
     @NotBlank
     private String userName;
-
-    /** The email of the user. Must not be blank and must be a valid email format. */
     @NotBlank
     @Email
     private String email;
-
-    /** The password of the user. Must not be blank. */
     @NotBlank
     private String password;
 }

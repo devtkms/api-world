@@ -11,20 +11,13 @@ import lombok.Data;
 @Data
 public class UpdateUserRequestDto {
 
-    /** The ID of the user to be updated. Must not be blank. */
     @NotNull
     private Long userId;
-
-    /** The name of the user. Must not be blank. */
     @NotBlank
     private String userName;
-
-    /** The email of the user. Must not be blank and must be a valid email format. */
     @NotBlank
     @Email
     private String email;
-
-    /** The new password of the user. Must not be blank. */
     @NotBlank
     private String password;
 }

@@ -6,9 +6,9 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface FilesDao {
     /**
+     * Inserts a file entity into the database.
      *
-     *
-     * @param
+     * @param filesEntity The FilesEntity object containing the file metadata to be inserted.
      */
     void insertFile(FilesEntity filesEntity);
 }

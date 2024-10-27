@@ -12,6 +12,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class RegisterUserResponseDto {
 
-    /** The ID of the registered user. */
     private Long userId;
 }

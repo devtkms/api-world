@@ -36,8 +36,9 @@ public class SecurityConfig {
                         .requestMatchers("/api/user/{userId}").permitAll() // Allow access to user information by ID
                         .requestMatchers("/api/user/login").permitAll() // Allow access to user login
                         .requestMatchers("/api/file/register").permitAll() // Allow access to file registration
-                        .requestMatchers("/api/file/serialize").permitAll() //
-                        .requestMatchers("/api/file/deserialize").permitAll() //
+                        .requestMatchers("/api/file/async").permitAll() // Allow access to asynchronous file upload
+                        .requestMatchers("/api/file/serialize").permitAll() // Allow access to object serialization
+                        .requestMatchers("/api/file/deserialize").permitAll() // Allow access to object deserialization
                         .anyRequest().authenticated() // All other requests require authentication
                 )
                 .securityContext((context) -> context
