@@ -5,6 +5,7 @@ This project aims to create various APIs using Java and Spring, while learning a
 ### User Management API
 This API allows for user registration, information retrieval, updating, and deletion.
 
+
 - **POST** `/api/user/register`: Registers a new user.
 - **GET** `/api/user/{userId}`: Retrieves the information of the specified user.
 - **PUT** `/api/user/{userId}`: Updates the information of the specified user.
