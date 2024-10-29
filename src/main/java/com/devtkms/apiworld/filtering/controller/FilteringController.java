@@ -13,6 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/**
+ * Controller for filtering operations.
+ * This class handles HTTP requests related to item filtering.
+ */
 @RestController
 @RequestMapping("/api/filter")
 public class FilteringController {
@@ -20,6 +24,12 @@ public class FilteringController {
     @Autowired
     FilteringService filteringService;
 
+    /**
+     * Filters items based on the provided filter criteria.
+     *
+     * @param filteringRequestDto the request DTO containing the list of items and the filter criteria
+     * @return ResponseEntity containing the filtered items wrapped in ApiResponseDto
+     */
     @PostMapping("/items")
     public ResponseEntity<ApiResponseDto<List<String>>> filterItems(@RequestBody FilteringRequestDto filteringRequestDto) {
         List<String> filteredItems = filteringService.filterItems(filteringRequestDto);
