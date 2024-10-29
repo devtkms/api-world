@@ -39,6 +39,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/file/async").permitAll() // Allow access to asynchronous file upload
                         .requestMatchers("/api/file/serialize").permitAll() // Allow access to object serialization
                         .requestMatchers("/api/file/deserialize").permitAll() // Allow access to object deserialization
+                        .requestMatchers("/api/filter/items").permitAll()
                         .anyRequest().authenticated() // All other requests require authentication
                 )
                 .securityContext((context) -> context
