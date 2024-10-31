@@ -3,7 +3,7 @@ package com.devtkms.apiworld.salesAggregation.controller;
 import com.devtkms.apiworld.common.dto.ApiResponseDto;
 import com.devtkms.apiworld.salesAggregation.dto.AggregateSalesRequestDto;
 import com.devtkms.apiworld.salesAggregation.dto.AggregateSalesResponseDto;
-import com.devtkms.apiworld.salesAggregation.service.SalesAggregationService;
+    import com.devtkms.apiworld.salesAggregation.service.SalesAggregationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
