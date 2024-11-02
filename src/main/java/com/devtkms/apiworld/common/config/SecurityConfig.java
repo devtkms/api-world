@@ -40,6 +40,9 @@ public class SecurityConfig {
                         .requestMatchers("/api/file/serialize").permitAll() // Allow access to object serialization
                         .requestMatchers("/api/file/deserialize").permitAll() // Allow access to object deserialization
                         .requestMatchers("/api/sales/aggregate").permitAll()
+                        .requestMatchers("/api/products").permitAll()
+                        .requestMatchers("/api/products/{id}").permitAll()
+
                         .requestMatchers("/api/filter/items").permitAll()
                         .anyRequest().authenticated() // All other requests require authentication
                 )
