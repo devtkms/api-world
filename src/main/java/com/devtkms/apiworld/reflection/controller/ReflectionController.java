@@ -27,6 +27,9 @@ public class ReflectionController {
     @GetMapping("/class-info/{className}")
     public ResponseEntity<ApiResponseDto<ClassInfoDto>> getClassInfo(@PathVariable String className) {
         ClassInfoDto classInfo = reflectionService.getClassInfo(className);
-        return ResponseEntity.status(HttpStatus.CREATED).body(apiResponse);
+
+        // Successful response with class information
+        ApiResponseDto<ClassInfoDto> response = ApiResponseDto.success(classInfo);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 }
