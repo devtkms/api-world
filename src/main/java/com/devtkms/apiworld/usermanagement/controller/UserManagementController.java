@@ -36,14 +36,14 @@ public class UserManagementController {
     /**
      * Registers a new user.
      *
-     * @param registerUserRequestDto the request DTO containing user registration details
+     * @param request the request DTO containing user registration details
      * @return a ResponseEntity containing the API response DTO with the registered user's information
      */
     @PostMapping("/register")
     public ResponseEntity<ApiResponseDto<RegisterUserResponseDto>> registerUser(
-            @Valid @RequestBody RegisterUserRequestDto registerUserRequestDto) {
+            @Valid @RequestBody RegisterUserRequestDto request) {
 
-        RegisterUserResponseDto result = userManagementService.registerUser(registerUserRequestDto);
+        RegisterUserResponseDto result = userManagementService.registerUser(request);
         ApiResponseDto<RegisterUserResponseDto> response = ApiResponseDto.success(result);
         return ResponseEntity.ok(response);
     }
@@ -65,13 +65,13 @@ public class UserManagementController {
     /**
      * Updates user information.
      *
-     * @param updateUserRequestDto the request DTO containing the updated user information
+     * @param request the request DTO containing the updated user information
      * @return a ResponseEntity containing the API response DTO with the updated user's information
      */
     @PutMapping("/{userId}")
-    public ResponseEntity<ApiResponseDto<UpdateUserResponseDto>> updateUser(@Valid @RequestBody UpdateUserRequestDto updateUserRequestDto) {
+    public ResponseEntity<ApiResponseDto<UpdateUserResponseDto>> updateUser(@Valid @RequestBody UpdateUserRequestDto request) {
 
-        UpdateUserResponseDto result = userManagementService.updateUser(updateUserRequestDto);
+        UpdateUserResponseDto result = userManagementService.updateUser(request);
         ApiResponseDto<UpdateUserResponseDto> response = ApiResponseDto.success(result);
         return ResponseEntity.ok(response);
     }

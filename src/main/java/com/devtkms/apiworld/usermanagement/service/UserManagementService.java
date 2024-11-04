@@ -7,10 +7,10 @@ public interface UserManagementService {
         /**
          * Registers a new user.
          *
-         * @param registerUserRequestDto the user registration request containing the user's information
+         * @param request the user registration request containing the user's information
          * @return a RegisterUserResponseDto containing the registered user's information
          */
-        RegisterUserResponseDto registerUser(RegisterUserRequestDto registerUserRequestDto);
+        RegisterUserResponseDto registerUser(RegisterUserRequestDto request);
 
         /**
          * Retrieves user information by user ID.
@@ -23,10 +23,10 @@ public interface UserManagementService {
         /**
          * Updates user information.
          *
-         * @param updateUserRequestDto the request containing the updated user information
+         * @param request the request containing the updated user information
          * @return an UpdateUserResponseDto containing the updated user's information
          */
-        UpdateUserResponseDto updateUser(UpdateUserRequestDto updateUserRequestDto);
+        UpdateUserResponseDto updateUser(UpdateUserRequestDto request);
 
         /**
          * Deletes a user by user ID.
