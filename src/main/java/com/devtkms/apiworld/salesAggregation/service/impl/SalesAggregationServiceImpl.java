@@ -16,10 +16,10 @@ import java.util.List;
 public class SalesAggregationServiceImpl implements SalesAggregationService {
 
     /**
-     * Aggregates sales data to calculate total and average sales amount.
+     * Aggregates sales data to calculate total, average, minimum, and maximum sales amounts.
      *
      * @param request the request DTO containing the list of sales transactions
-     * @return AggregateSalesResponseDto containing the total and average sales amount
+     * @return AggregateSalesResponseDto containing the total, average, minimum, and maximum sales amounts
      */
     @Override
     public AggregateSalesResponseDto aggregateSales(AggregateSalesRequestDto request) {
@@ -34,6 +34,17 @@ public class SalesAggregationServiceImpl implements SalesAggregationService {
                 .average() // Calculate average amount
                 .orElse(0.0); // Default to 0 if no sales
 
-        return new AggregateSalesResponseDto(total, average);
+        double minSale = sales.stream()
+                .mapToDouble(Sale::getAmount) // Map each Sale object to its amount
+                .min() // Find the minimum amount
+                .orElse(0.0); // Default to 0 if no sales
+
+        double maxSale = sales.stream()
+                .mapToDouble(Sale::getAmount) // Map each Sale object to its amount
+                .max() // Find the maximum amount
+                .orElse(0.0); // Default to 0 if no sales
+
+        // Create and return the response DTO
+        return new AggregateSalesResponseDto(total, average, minSale, maxSale);
     }
 }
