@@ -29,18 +29,6 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * Handles FileUploadException thrown by the application.
-     *
-     * @param ex the FileUploadException that was thrown
-     * @return a ResponseEntity containing an error response
-     */
-    @ExceptionHandler(FileUploadException.class)
-    public ResponseEntity<ApiResponseDto<Void>> handleFileUploadException(FileUploadException ex) {
-        ApiResponseDto<Void> response = ApiResponseDto.error(ex.getMessage(), 400);
-        return ResponseEntity.badRequest().body(response);
-    }
-
-    /**
      * Handles all other exceptions that are not specifically handled.
      *
      * @param ex the Exception that was thrown
