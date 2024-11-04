@@ -44,6 +44,8 @@ public class SecurityConfig {
                         .requestMatchers("/api/products/{id}").permitAll()
                         .requestMatchers("/api/filter/items").permitAll()
                         .requestMatchers("/api/reflection/class-info/{className}").permitAll()
+                        .requestMatchers("/api/parallel/process").permitAll()
+                        .requestMatchers("/api/data-processing/process").permitAll()
                         .anyRequest().authenticated() // All other requests require authentication
                 )
                 .securityContext((context) -> context
