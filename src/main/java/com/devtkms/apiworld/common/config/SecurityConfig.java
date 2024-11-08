@@ -65,6 +65,7 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(
             CustomUserDetailsService userDetailsService,
             PasswordEncoder passwordEncoder) {
+
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setUserDetailsService(userDetailsService); // Set the custom UserDetailsService
         authenticationProvider.setPasswordEncoder(passwordEncoder); // Set the password encoder
