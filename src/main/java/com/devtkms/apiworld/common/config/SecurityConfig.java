@@ -46,7 +46,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/reflection/class-info/{className}").permitAll()
                         .requestMatchers("/api/parallel/process").permitAll()
                         .requestMatchers("/api/data-processing/process").permitAll()
-                        .requestMatchers("/api/resources/process").permitAll()
+                        .requestMatchers("/api/resources/manage").permitAll()
                         .anyRequest().authenticated() // All other requests require authentication
                 )
                 .securityContext((context) -> context
