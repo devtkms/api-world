@@ -47,6 +47,8 @@ public class SecurityConfig {
                         .requestMatchers("/api/parallel/process").permitAll()
                         .requestMatchers("/api/data-processing/process").permitAll()
                         .requestMatchers("/api/resources/manage").permitAll()
+                        .requestMatchers("/api/tasks/execute").permitAll()
+                        .requestMatchers("/api/configuration/**").permitAll()
                         .anyRequest().authenticated() // All other requests require authentication
                 )
                 .securityContext((context) -> context
